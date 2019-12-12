@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 背景颜色 -->
+    <item android:drawable="@android:color/white" />
+    <!--注意此处的bottom要和activity_splash.xml中的logo图marginBottom的值保持一致-->
+    <item >
+        <!-- 图片 -->
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/logo_splash_new"
+            />
+    </item>
+</layer-list>
