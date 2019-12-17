@@ -17,7 +17,7 @@
 * [初步配置](#初步配置)
     * [引入](#引入)
     * [自定义启动任务](#自定义启动任务继承AppStartTask重写关键方法别的方法不用管也不要动为任务调度准备的)
-* [启动任务](#启动任务在Application的oncreate中调用Demo有完整的测试AppStartTask，细节请看代码)
+* [启动任务](#启动任务在Application的oncreate中调用Demo有完整的测试AppStartTask细节请看代码)
     
 # 初步配置
 ## 引入
