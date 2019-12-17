@@ -7,6 +7,7 @@ import com.wxy.appstartfaster.task.AppStartTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class TestAppStartTaskFive extends AppStartTask {
 
@@ -29,8 +30,14 @@ public class TestAppStartTaskFive extends AppStartTask {
     }
 
     @Override
+    public Executor runOnExecutor() {
+        return super.runOnExecutor();
+    }
+
+    @Override
     public boolean isRunOnMainThread() {
         return false;
     }
+
 
 }

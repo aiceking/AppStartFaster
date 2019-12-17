@@ -38,7 +38,6 @@ public class AppStartTaskDispatcher {
     //需要等待的任务总数，用于CountDownLatch
     private AtomicInteger needWaitCount ;
     //所有的任务总数
-    private AtomicInteger allCount ;
     private long startTime,finishTime;
 
     public static AppStartTaskDispatcher getInstance() {
@@ -57,7 +56,6 @@ public class AppStartTaskDispatcher {
         taskChildHashMap=new HashMap<>();
         startTaskList=new ArrayList<>();
         needWaitCount=new AtomicInteger();
-        allCount=new AtomicInteger();
     }
     public AppStartTaskDispatcher setContext(Context context) {
         this.context = context;
@@ -70,7 +68,6 @@ public class AppStartTaskDispatcher {
             throw new RuntimeException("addAppStartTask() 传入的appStartTask为null");
         }
         startTaskList.add(appStartTask);
-        allCount.getAndIncrement();
         if (ifNeedWait(appStartTask)){
             needWaitCount.getAndIncrement();
         }
@@ -140,7 +137,6 @@ public class AppStartTaskDispatcher {
     //标记已经完成的Task
     public void markAppStartTaskFinish(AppStartTask appStartTask) {
         AppStartTaskLogUtils.shwoLog("任务完成了："+appStartTask.getClass().getName());
-        allCount.getAndDecrement();
         if (ifNeedWait(appStartTask)) {
             countDownLatch.countDown();
             needWaitCount.getAndDecrement();

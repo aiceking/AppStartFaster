@@ -25,7 +25,8 @@ public class MyApplication extends Application {
                 .addAppStartTask(new TestAppStartTaskThree())
                 .addAppStartTask(new TestAppStartTaskOne())
                 .start()
-                .await();}
+                .await();
+        }
     }
 
     @Override
