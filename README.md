@@ -16,8 +16,7 @@
 # 使用   
 * [初步配置](#初步配置)
     * [引入](#引入)
-    * [自定义启动任务](#自定义加载状态页面-Adapter继承-BaseLoadRetryAdapter下面各方法都是按需被调用取决于你主动设置的显示哪个Adapter)
-* [使用](#最常规用法针对一个View针对多个View和针对一个View用法一致流程都是针对某个View的)
+    * [自定义启动任务](#自定义启动任务继承AppStartTask重写关键方法别的方法不用管也不要动为任务调度准备的)
     * [启动任务](#在Application的oncreate中调用)
     
 # 初步配置
@@ -41,7 +40,7 @@ Step 2. Add the dependency
 | 方法      |参数或返回值  | 作用  |
 | :-------- | :--------| :--: |
 | run| void  |  这里写你要执行的任务代码  |
-| getDependsTaskList| 返回 List<Class<? extends AppStartTask>> |  这里返回当前任务需要依赖的父任务，只有父任务执行完，当前任务才执行，如果没有，返回null  |
+| getDependsTaskList| 返回 List<Class<? extends AppStartTask>> |  这个方法用于构造图，这里返回当前任务需要依赖的任务，只有依赖任务执行完，当前任务才执行，如果没有，返回null  |
 | isRunOnMainThread| 返回boolean  |  是否运行在主线程  |
 
 ### 根据实际需求选择重写的方法
