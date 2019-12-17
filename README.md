@@ -8,6 +8,6 @@
 
 # 示例，Demo中模拟了5个启动任务，且他们的依赖关系为
 
-|![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo1.jpg)
+![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo1.jpg)
 
-|![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo2.jpg)
+![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo2.jpg)
