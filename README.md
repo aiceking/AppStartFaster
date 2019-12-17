@@ -10,6 +10,6 @@
 
 ![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo1.jpg)
 
-**运行结果**：如下所示（这个结果的场景是只有主线程的任务是阻塞的，其他任务不阻塞。如需要要保证某个任务阻塞，下文会介绍用法）
+**运行结果**：日志输出在Android Studio的Error中，如下所示（这个结果的场景是只有主线程的任务是阻塞的，其他任务不阻塞。如需要要保证某个任务阻塞，下文会介绍用法）
 
 ![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo2.jpg)
