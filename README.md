@@ -3,7 +3,7 @@
 [![](https://jitpack.io/v/NoEndToLF/AppStartFaster.svg)](https://jitpack.io/#NoEndToLF/AppStartFaster)
 
 **AppStartFaster**：包含两部分，一部分是冷启动任务分发，一部分是Multdex冷启动优化
-- **启动器** ：本质所有任务就是一个有向无环图，通过Systrace确定wallTime和cpuTime，然后选择合适的线程池，这里的线程池有两种（cpu定容线程池，io缓存线程池）再构造任务之间的图关系(正确使用启动速度优化30%很容易)
+- **启动器** ：本质所有任务就是一个有向无环图，通过Systrace确定wallTime和cpuTime，然后选择合适的线程池，这里的线程池有两种（cpu定容线程池，io缓存线程池），cpuTime长的就证明他消耗cpu时间片，多线程并发的本质就是抢夺时间片，所以cpuTime长的要选择定容线程池，防止他并发时候影响cpu效率，反之选择缓存线程池，再构造任务之间的图关系(正确使用启动速度优化30%很容易)
 - **Multdex** ：5.0以下开新进程Activity去加载dex，其实就是为了第一时间显示第一个Activity，属于伪优化，其实在加载dex过程中，Multdex先将dex压缩成了zip，然后又解压zip，而他是可以直接去加载dex的，这里多了一个压缩又解压的过程，所以其实真正的优化应该是避免先解压再压缩。
 
 **示例**：Demo中模拟了5个启动任务，且他们的依赖关系为如下所示，每个任务都模拟耗时300ms
