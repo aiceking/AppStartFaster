@@ -19,6 +19,7 @@ public class MyApplication extends Application {
         if (MultidexUtils.isMainProcess(this)){
         AppStartTaskDispatcher.getInstance()
                 .setContext(this)
+                .setShowLog(true)
                 .addAppStartTask(new TestAppStartTaskTwo())
                 .addAppStartTask(new TestAppStartTaskFour())
                 .addAppStartTask(new TestAppStartTaskFive())

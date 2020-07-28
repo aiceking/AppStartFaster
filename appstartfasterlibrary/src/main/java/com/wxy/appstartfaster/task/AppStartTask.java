@@ -30,6 +30,7 @@ public  abstract class AppStartTask implements TaskInterface {
 
     //执行任务代码
     public abstract void run();
+
     //他的父亲们执行完了一个
     public void Notify() {
         mDepends.countDown();

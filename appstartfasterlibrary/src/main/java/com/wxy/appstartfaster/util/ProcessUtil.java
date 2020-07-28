@@ -6,7 +6,7 @@ import android.os.Process;
 
 import java.util.List;
 
-public class ProcessUtils {
+public class ProcessUtil {
     //是否在主进程
     public static boolean isMainProcess(Context context){
         return context.getPackageName().equals(getProcessName(context));

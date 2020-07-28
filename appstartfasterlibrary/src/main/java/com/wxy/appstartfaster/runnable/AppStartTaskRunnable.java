@@ -20,7 +20,7 @@ public class AppStartTaskRunnable implements Runnable {
         Process.setThreadPriority(appStartTask.priority());
         appStartTask.waitToNotify();
         appStartTask.run();
-        appStartTaskDispatcher.satNotifyChildren(appStartTask);
+        appStartTaskDispatcher.setNotifyChildren(appStartTask);
         appStartTaskDispatcher.markAppStartTaskFinish(appStartTask);
     }
 }
