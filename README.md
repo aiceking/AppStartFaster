@@ -53,12 +53,22 @@ Step 2. Add the dependency
 
 ## 配置任务调度器参数，即AppStartTaskDispatcher的配置方法
 
+| 方法      |参数或返回值  | 作用  |
+| :-------- | :--------| :--: |
+| setContext| 返回AppStartTaskDispatcher  |  设置Application的context，用于判断是否在主进程，此方法必须先于其他方法调用 |
+| setShowLog| 返回AppStartTaskDispatcher |  是否输出日志，需使用者自行控制，默认为false，设为true可以看到任务的执行顺序，执行情况等信息 |
+| setAllTaskWaitTimeOut| 返回AppStartTaskDispatcher |  阻塞等待所有非主线程AppStartTask中needWait返回true的任务的保护时间，即最多等待时间，超过这个时间不再阻塞，只在调用了await方法后生效  |
+| addAppStartTask| 返回AppStartTaskDispatcher  |  添加任务  |
+| start| 返回AppStartTaskDispatcher  |  开始执行任务  |
+| await| void |  阻塞等待所有非主线程AppStartTask中needWait返回true的任务  |
+
 # 启动任务，在Application的oncreate中调用，Demo有完整的测试AppStartTask，细节请看代码
-## add顺序无所谓，不影响图的关系，注意await()会阻塞等待所有AppStartTask中needWait返回true的任务，所以需要按需使用，主线程的任务本来就是阻塞的，所以，如果不需要等待非主线程任务的执行，则不用重写AppStartTask的needWait方法，也不用调用AppStartTaskDispatcher.await()方法。
+## add顺序无所谓，不影响图的关系，注意await()会阻塞等待所有非主线程AppStartTask中needWait返回true的任务，所以需要按需使用，主线程的任务本来就是阻塞的，所以，如果不需要等待非主线程任务的执行，则不用重写AppStartTask的needWait方法，也不用调用AppStartTaskDispatcher.await()方法。
 ```java
 AppStartTaskDispatcher.getInstance()
                 .setContext(this)
 		.setShowLog(true)
+		.setAllTaskWaitTimeOut(5000)
                 .addAppStartTask(new TestAppStartTaskTwo())
                 .addAppStartTask(new TestAppStartTaskFour())
                 .addAppStartTask(new TestAppStartTaskFive())
