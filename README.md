@@ -17,6 +17,7 @@
 * [初步配置](#初步配置)
     * [引入](#引入)
     * [自定义启动任务](#自定义启动任务继承AppStartTask重写关键方法别的方法不用管也不要动为任务调度准备的)
+    * [配置任务调度器参数](#配置任务调度器参数即AppStartTaskDispatcher的配置方法)
 * [启动任务](#启动任务在Application的oncreate中调用Demo有完整的测试AppStartTask细节请看代码)
 * [反馈与建议](#反馈与建议)    
 # 初步配置
@@ -49,12 +50,15 @@ Step 2. Add the dependency
 | priority| 返回int  |  这个代表当前线程的优先级，优先级高不一定会优先执行，而是获得cpu时间片的几率会变高，默认返回Process.THREAD_PRIORITY_BACKGROUND |
 | runOnExecutor| 返回 Executor |  在isRunOnMainThread返回false的情况下起作用，决定当前任务在哪个线程池执行，需要使用Systrace确定wallTime和cpuTime，占cpuTime多建议的使用cpu线程池：TaskExceutorManager.getInstance().getCPUThreadPoolExecutor() ，默认返回TaskExceutorManager.getInstance().getIOThreadPoolExecutor()  |
 | needWait| 返回boolean  |  这个方法决定了你的这个任务是否是需要等待执行完的，需结合启动管理器AppStartTaskDispatcher.await方法使用  |
- 
+
+## 配置任务调度器参数，即AppStartTaskDispatcher的配置方法
+
 # 启动任务，在Application的oncreate中调用，Demo有完整的测试AppStartTask，细节请看代码
 ## add顺序无所谓，不影响图的关系，注意await()会阻塞等待所有AppStartTask中needWait返回true的任务，所以需要按需使用，主线程的任务本来就是阻塞的，所以，如果不需要等待非主线程任务的执行，则不用重写AppStartTask的needWait方法，也不用调用AppStartTaskDispatcher.await()方法。
 ```java
 AppStartTaskDispatcher.getInstance()
                 .setContext(this)
+		.setShowLog(true)
                 .addAppStartTask(new TestAppStartTaskTwo())
                 .addAppStartTask(new TestAppStartTaskFour())
                 .addAppStartTask(new TestAppStartTaskFive())
