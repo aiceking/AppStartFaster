@@ -44,8 +44,9 @@ public class AppStartTaskDispatcher {
     private long mStartTime, mFinishTime;
     //所有阻塞任务的总超时时间
     private long mAllTaskWaitTimeOut;
-    public void setAllTaskWaitTimeOut(long allTaskWaitTimeOut) {
+    public AppStartTaskDispatcher setAllTaskWaitTimeOut(long allTaskWaitTimeOut) {
         mAllTaskWaitTimeOut = allTaskWaitTimeOut;
+        return this;
     }
     public boolean isShowLog() {
         return isShowLog;

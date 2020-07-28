@@ -20,6 +20,7 @@ public class MyApplication extends Application {
         AppStartTaskDispatcher.getInstance()
                 .setContext(this)
                 .setShowLog(true)
+                .setAllTaskWaitTimeOut(1000)
                 .addAppStartTask(new TestAppStartTaskTwo())
                 .addAppStartTask(new TestAppStartTaskFour())
                 .addAppStartTask(new TestAppStartTaskFive())
