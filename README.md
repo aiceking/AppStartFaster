@@ -10,7 +10,7 @@
 
 **示例**：Demo中模拟了5个启动任务，且他们的依赖关系为如下所示，每个任务都模拟耗时300ms
 
-![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo1.jpg)
+![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo1.jpeg)
 
 **运行结果**：拿Android Studio的模拟器试的，日志输出在Android Studio的Error中，如下所示（这个结果的场景是只有主线程的任务是阻塞的，其他任务不阻塞。如需要要保证某个任务阻塞，下文会介绍用法）
 
