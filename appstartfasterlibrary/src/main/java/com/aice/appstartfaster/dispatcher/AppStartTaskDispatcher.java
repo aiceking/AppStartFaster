@@ -119,15 +119,11 @@ public class AppStartTaskDispatcher {
     private void dispatchAppStartTask() {
         //再发送非主线程的任务
         for (AppStartTask appStartTask : mSortThreadPoolTaskList) {
-            if (!appStartTask.isRunOnMainThread()) {
-                appStartTask.runOnExecutor().execute(new AppStartTaskRunnable(appStartTask, this));
-            }
+            appStartTask.runOnExecutor().execute(new AppStartTaskRunnable(appStartTask, this));
         }
         //再发送主线程的任务，防止主线程任务阻塞，导致子线程任务不能立刻执行
         for (AppStartTask appStartTask : mSortMainThreadTaskList) {
-            if (appStartTask.isRunOnMainThread()) {
-                new AppStartTaskRunnable(appStartTask, this).run();
-            }
+            new AppStartTaskRunnable(appStartTask, this).run();
         }
     }
 
