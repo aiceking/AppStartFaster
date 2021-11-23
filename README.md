@@ -16,7 +16,7 @@
 ![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo2.jpg)
 
 ## 更新日志
-### 1.1.0
+### 最新版本 1.1.0，改动如下
 #### 1、去掉单例，即你可以在任何地方使用此任务调度器来分发任务
 #### 2、去掉了之前需要传递的context，主进程的判断不再内置，需要判断是否在主进程处理任务时，可以调用ProcessUtil.isMainProcess(context)来自行判断
 
