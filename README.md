@@ -1,6 +1,6 @@
 # AppStartFaster
 
-[![](https://jitpack.io/v/NoEndToLF/AppStartFaster.svg)](https://jitpack.io/#NoEndToLF/AppStartFaster)
+[![](https://jitpack.io/v/aiceking/AppStartFaster.svg)](https://jitpack.io/#aiceking/AppStartFaster)
 
 **AppStartFaster**：包含两部分，一部分是冷启动任务分发，一部分是Multdex冷启动优化  
 
@@ -13,8 +13,13 @@
 ![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo1.jpeg)
 
 **运行结果**：拿Android Studio的模拟器试的，日志输出在Android Studio的Error中，如下所示（这个结果的场景是只有主线程的任务是阻塞的，其他任务不阻塞。如需要要保证某个任务阻塞，下文会介绍用法）
-
 ![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo2.jpg)
+
+## 更新日志
+### 1.1.0
+#### 1、去掉单例，即你可以在任何地方使用此任务调度器来分发任务
+#### 2、去掉了之前需要传递的context，主进程的判断不再内置，需要判断是否在主进程处理任务时，可以调用ProcessUtil.isMainProcess(context)来自行判断
+
 # 使用   
 * [初步配置](#初步配置)
     * [引入](#引入)
@@ -35,7 +40,7 @@ Step 1. Add it in your root build.gradle at the end of repositories：
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.NoEndToLF:AppStartFaster:1.0.3'
+	        implementation 'com.github.aiceking:AppStartFaster:1.1.0'
 	}
  ## 自定义启动任务，继承AppStartTask，重写关键方法，别的方法不用管，也不要动，为任务调度准备的
  
@@ -57,7 +62,7 @@ Step 2. Add the dependency
 
 | 方法      |参数或返回值  | 作用  |
 | :-------- | :--------| :--: |
-| setContext| 返回AppStartTaskDispatcher  |  设置Application的context，用于判断是否在主进程，此方法必须先于其他方法调用 |
+| create | 返回AppStartTaskDispatcher  |  创建本次的任务分发器 |
 | setShowLog| 返回AppStartTaskDispatcher |  是否输出日志，需使用者自行控制，默认为false，设为true可以看到任务的执行顺序，执行情况等信息 |
 | setAllTaskWaitTimeOut| 返回AppStartTaskDispatcher |  阻塞等待所有非主线程AppStartTask中needWait返回true的任务的保护时间，即最多等待时间，超过这个时间不再阻塞，只在调用了await方法后生效  |
 | addAppStartTask| 返回AppStartTaskDispatcher  |  添加任务  |
@@ -67,8 +72,7 @@ Step 2. Add the dependency
 # 启动任务，在Application的oncreate中调用，Demo有完整的测试AppStartTask，细节请看代码
 ## add顺序无所谓，不影响图的关系，注意await()会阻塞等待所有非主线程AppStartTask中needWait返回true的任务，所以需要按需使用，主线程的任务本来就是阻塞的，所以，如果不需要等待非主线程任务的执行，则不用重写AppStartTask的needWait方法，也不用调用AppStartTaskDispatcher.await()方法。
 ```java
-AppStartTaskDispatcher.getInstance()
-                .setContext(this)
+AppStartTaskDispatcher.create()
 		.setShowLog(true)
 		.setAllTaskWaitTimeOut(5000)
                 .addAppStartTask(new TestAppStartTaskTwo())
