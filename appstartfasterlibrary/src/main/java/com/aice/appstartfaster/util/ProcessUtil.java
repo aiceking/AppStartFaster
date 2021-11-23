@@ -1,4 +1,4 @@
-package com.wxy.appstartfaster.util;
+package com.aice.appstartfaster.util;
 
 import android.app.ActivityManager;
 import android.content.Context;

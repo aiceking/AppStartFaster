@@ -1,10 +1,10 @@
-package com.wxy.appstartfaster.task;
+package com.aice.appstartfaster.task;
 
 import android.os.Process;
 
 
-import com.wxy.appstartfaster.base.TaskInterface;
-import com.wxy.appstartfaster.executor.TaskExceutorManager;
+import com.aice.appstartfaster.base.TaskInterface;
+import com.aice.appstartfaster.executor.TaskExceutorManager;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;

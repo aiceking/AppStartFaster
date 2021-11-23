@@ -1,9 +1,9 @@
-package com.wxy.appstartfaster.runnable;
+package com.aice.appstartfaster.runnable;
 
 import android.os.Process;
 
-import com.wxy.appstartfaster.dispatcher.AppStartTaskDispatcher;
-import com.wxy.appstartfaster.task.AppStartTask;
+import com.aice.appstartfaster.dispatcher.AppStartTaskDispatcher;
+import com.aice.appstartfaster.task.AppStartTask;
 
 
 public class AppStartTaskRunnable implements Runnable {

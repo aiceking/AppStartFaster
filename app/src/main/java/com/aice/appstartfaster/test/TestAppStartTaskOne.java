@@ -2,10 +2,10 @@ package com.aice.appstartfaster.test;
 
 import android.util.Log;
 
-
-import com.wxy.appstartfaster.task.AppStartTask;
+import com.aice.appstartfaster.task.AppStartTask;
 
 import java.util.List;
+
 
 public class TestAppStartTaskOne extends AppStartTask {
 

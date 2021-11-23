@@ -1,4 +1,4 @@
-package com.wxy.appstartfaster.util.model;
+package com.aice.appstartfaster.util.model;
 
 public class TaskSortModel {
     private int in;

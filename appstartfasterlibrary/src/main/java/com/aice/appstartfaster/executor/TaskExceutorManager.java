@@ -1,4 +1,4 @@
-package com.wxy.appstartfaster.executor;
+package com.aice.appstartfaster.executor;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;

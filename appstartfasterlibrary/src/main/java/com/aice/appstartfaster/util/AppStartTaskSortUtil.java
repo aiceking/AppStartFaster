@@ -1,8 +1,8 @@
-package com.wxy.appstartfaster.util;
+package com.aice.appstartfaster.util;
 
 
-import com.wxy.appstartfaster.task.AppStartTask;
-import com.wxy.appstartfaster.util.model.TaskSortModel;
+import com.aice.appstartfaster.task.AppStartTask;
+import com.aice.appstartfaster.util.model.TaskSortModel;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

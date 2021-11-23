@@ -1,8 +1,8 @@
-package com.wxy.appstartfaster.util;
+package com.aice.appstartfaster.util;
 
 import android.util.Log;
 
-import com.wxy.appstartfaster.dispatcher.AppStartTaskDispatcher;
+import com.aice.appstartfaster.dispatcher.AppStartTaskDispatcher;
 
 public class AppStartTaskLogUtil {
     private static final String TAG="AppStartTask: ";

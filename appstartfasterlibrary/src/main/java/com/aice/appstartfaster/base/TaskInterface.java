@@ -1,9 +1,9 @@
-package com.wxy.appstartfaster.base;
+package com.aice.appstartfaster.base;
 
 import android.os.Process;
 
 
-import com.wxy.appstartfaster.task.AppStartTask;
+import com.aice.appstartfaster.task.AppStartTask;
 
 import java.util.List;
 import java.util.concurrent.Executor;
