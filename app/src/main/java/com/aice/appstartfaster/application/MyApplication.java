@@ -17,8 +17,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         if (MultidexUtils.isMainProcess(this)) {
-            AppStartTaskDispatcher.getInstance()
-                    .setContext(this)
+            AppStartTaskDispatcher.create()
                     .setShowLog(true)
                     .setAllTaskWaitTimeOut(1000)
                     .addAppStartTask(new TestAppStartTaskTwo())
