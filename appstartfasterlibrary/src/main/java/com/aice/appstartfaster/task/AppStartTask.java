@@ -4,7 +4,7 @@ import android.os.Process;
 
 
 import com.aice.appstartfaster.base.TaskInterface;
-import com.aice.appstartfaster.executor.TaskExceutorManager;
+import com.aice.appstartfaster.executor.TaskExecutorManager;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -38,7 +38,7 @@ public  abstract class AppStartTask implements TaskInterface {
 
     @Override
     public Executor runOnExecutor() {
-        return TaskExceutorManager.getInstance().getIOThreadPoolExecutor();
+        return TaskExecutorManager.getInstance().getIOThreadPoolExecutor();
     }
 
     @Override

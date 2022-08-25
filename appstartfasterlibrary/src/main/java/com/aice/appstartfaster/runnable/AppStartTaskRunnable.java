@@ -7,20 +7,20 @@ import com.aice.appstartfaster.task.AppStartTask;
 
 
 public class AppStartTaskRunnable implements Runnable {
-    private AppStartTask appStartTask;
-    private AppStartTaskDispatcher appStartTaskDispatcher;
+    private AppStartTask mAppStartTask;
+    private AppStartTaskDispatcher mAppStartTaskDispatcher;
 
     public AppStartTaskRunnable(AppStartTask appStartTask, AppStartTaskDispatcher appStartTaskDispatcher) {
-        this.appStartTask = appStartTask;
-        this.appStartTaskDispatcher = appStartTaskDispatcher;
+        this.mAppStartTask = appStartTask;
+        this.mAppStartTaskDispatcher = appStartTaskDispatcher;
     }
 
     @Override
     public void run() {
-        Process.setThreadPriority(appStartTask.priority());
-        appStartTask.waitToNotify();
-        appStartTask.run();
-        appStartTaskDispatcher.setNotifyChildren(appStartTask);
-        appStartTaskDispatcher.markAppStartTaskFinish(appStartTask);
+        Process.setThreadPriority(mAppStartTask.priority());
+        mAppStartTask.waitToNotify();
+        mAppStartTask.run();
+        mAppStartTaskDispatcher.setNotifyChildren(mAppStartTask);
+        mAppStartTaskDispatcher.markAppStartTaskFinish(mAppStartTask);
     }
 }

@@ -3,7 +3,7 @@ package com.aice.appstartfaster.test;
 import android.util.Log;
 
 
-import com.aice.appstartfaster.executor.TaskExceutorManager;
+import com.aice.appstartfaster.executor.TaskExecutorManager;
 import com.aice.appstartfaster.task.AppStartTask;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class TestAppStartTaskTwo extends AppStartTask {
 
     @Override
     public Executor runOnExecutor() {
-        return TaskExceutorManager.getInstance().getCPUThreadPoolExecutor();
+        return TaskExecutorManager.getInstance().getCPUThreadPoolExecutor();
     }
 
     @Override
