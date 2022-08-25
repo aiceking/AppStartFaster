@@ -17,8 +17,8 @@
 
 ## 更新日志
 #### v2.1.0
-##### 1、删除ProcessUtil
-##### 2、代码格式规范化
+- 删除ProcessUtil
+- 代码格式规范化
 
 #### v2.0.0
 ##### 1、去掉单例，一次多任务的处理是一个任务调度器，各个任务调度器之间互不干扰，但是会共用线程池以便减少性能开销，现在你可以在任何地方使用此任务调度器来分发任务
@@ -44,7 +44,7 @@ Step 1. Add it in your root build.gradle at the end of repositories：
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.aiceking:AppStartFaster:2.0.0'
+	        implementation 'com.github.aiceking:AppStartFaster:2.1.0'
 	}
  ## 自定义启动任务，继承AppStartTask，重写关键方法，别的方法不用管，也不要动，为任务调度准备的
  
