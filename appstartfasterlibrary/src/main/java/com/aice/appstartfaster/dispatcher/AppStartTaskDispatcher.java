@@ -1,13 +1,11 @@
 package com.aice.appstartfaster.dispatcher;
 
-import android.content.Context;
 import android.os.Looper;
 
 
 import com.aice.appstartfaster.runnable.AppStartTaskRunnable;
 import com.aice.appstartfaster.util.AppStartTaskLogUtil;
 import com.aice.appstartfaster.util.AppStartTaskSortUtil;
-import com.aice.appstartfaster.util.ProcessUtil;
 import com.aice.appstartfaster.task.AppStartTask;
 
 import java.util.ArrayList;
