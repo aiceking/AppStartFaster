@@ -16,6 +16,9 @@
 ![](https://github.com/NoEndToLF/AppStartFaster/blob/master/DemoImage/demo2.jpg)
 
 ## 更新日志
+#### v2.3.0
+- 内置混淆规则
+
 #### v2.2.0
 - 在非UI线程任务才设置线程优先级
 
@@ -47,7 +50,7 @@ Step 1. Add it in your root build.gradle at the end of repositories：
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.aiceking:AppStartFaster:2.2.0'
+	        implementation 'com.github.aiceking:AppStartFaster:2.3.0'
 	}
  ## 自定义启动任务，继承AppStartTask，重写关键方法，别的方法不用管，也不要动，为任务调度准备的
  
