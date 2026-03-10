@@ -1,1 +1,0 @@
--keep class * implements com.aice.appstartfaster.base.TaskInterface { *; }
