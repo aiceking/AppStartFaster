@@ -1,19 +1,15 @@
 apply plugin: 'com.android.library'
-apply plugin:'com.github.dcendents.android-maven'
-group='com.github.NoEndToLF'
+group='com.ice.cloud'
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
-
-
+    compileSdk rootProject.ext.compileSdk
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdk rootProject.ext.minSdk
+        targetSdk rootProject.ext.compileSdk
         versionCode 1
-        versionName "1.0"
+        versionName project.version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
+        consumerProguardFiles 'proguard-rules.pro'
     }
 
     buildTypes {
@@ -23,11 +19,15 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
