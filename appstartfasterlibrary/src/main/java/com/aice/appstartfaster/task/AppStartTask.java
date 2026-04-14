@@ -1,7 +1,7 @@
 package com.aice.appstartfaster.task;
 
 import android.os.Process;
-
+import android.util.Log;
 
 import com.aice.appstartfaster.base.TaskInterface;
 import com.aice.appstartfaster.executor.TaskExecutorManager;
@@ -10,19 +10,35 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 
-public  abstract class AppStartTask implements TaskInterface {
+public abstract class AppStartTask implements TaskInterface {
 
     // 当前Task依赖的Task数量（等父亲们执行完了，孩子才能执行），默认没有依赖
-    private CountDownLatch mDepends = new CountDownLatch(getDependsTaskList() == null ? 0 : getDependsTaskList().size());
+    private final List<Class<? extends AppStartTask>> mCachedDependsTaskList;
+    private final CountDownLatch mDepends;
+
+    protected AppStartTask() {
+        mCachedDependsTaskList = getDependsTaskList();
+        mDepends = new CountDownLatch(mCachedDependsTaskList == null ? 0 : mCachedDependsTaskList.size());
+    }
+
+    /**
+     * 返回缓存的依赖列表，避免重复调用 getDependsTaskList()。
+     * SortUtil 应使用此方法而非直接调用 getDependsTaskList()。
+     */
+    public List<Class<? extends AppStartTask>> getCachedDependsTaskList() {
+        return mCachedDependsTaskList;
+    }
 
     //当前Task等待，让父亲Task先执行
     public void waitToNotify() {
         try {
             mDepends.await();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            Log.w("AppStartTask", "waitToNotify interrupted: " + e.getMessage());
         }
     }
+
     @Override
     public int priority() {
         return Process.THREAD_PRIORITY_BACKGROUND;
@@ -31,7 +47,7 @@ public  abstract class AppStartTask implements TaskInterface {
     //执行任务代码
     public abstract void run();
 
-    //他的父亲们执行完了一个
+    //他的父亲们执行完了一个（Task 5 将改名为 notifyDependencyFinished）
     public void Notify() {
         mDepends.countDown();
     }
@@ -53,5 +69,4 @@ public  abstract class AppStartTask implements TaskInterface {
 
     //是否在主线程执行
     public abstract boolean isRunOnMainThread();
-
 }
