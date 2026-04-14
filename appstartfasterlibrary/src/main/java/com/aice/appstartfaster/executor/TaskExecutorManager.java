@@ -24,14 +24,10 @@ public class TaskExecutorManager {
     private static final int KEEP_ALIVE_SECONDS = 5;
     //线程池队列
     private final BlockingQueue<Runnable> mPoolWorkQueue = new LinkedBlockingQueue<>();
-    // 这个是为了保障任务超出BlockingQueue的最大值，且线程池中的线程数已经达到MAXIMUM_POOL_SIZE时候，还有任务到来会采取任务拒绝策略，这里定义的策略就是
-    //再开一个缓存线程池去执行。当然BlockingQueue默认的最大值是int_max，所以理论上这里是用不到的
-    private final RejectedExecutionHandler mHandler = new RejectedExecutionHandler() {
-        @Override
-        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-            Executors.newCachedThreadPool().execute(r);
-        }
-    };
+    // 当 CPU 线程池拒绝任务时的备用线程池（复用单例，避免每次 new）
+    private final ExecutorService mFallbackExecutor = Executors.newCachedThreadPool();
+    private final RejectedExecutionHandler mHandler =
+            (r, executor) -> mFallbackExecutor.execute(r);
 
     public static TaskExecutorManager getInstance() {
         if (sTaskExecutorManager == null) {
@@ -53,12 +49,12 @@ public class TaskExecutorManager {
         mIOThreadPoolExecutor = Executors.newCachedThreadPool(Executors.defaultThreadFactory());
     }
 
-    //获得cpu密集型线程池,因为占据CPU的时间片过多的话会影响性能，所以这里控制了最大并发，防止主线程的时间片减少
+    //获得cpu密集型线程池
     public ThreadPoolExecutor getCPUThreadPoolExecutor() {
         return mCPUThreadPoolExecutor;
     }
 
-    //获得io密集型线程池，有好多任务其实占用的CPU time非常少，所以使用缓存线程池,基本上来着不拒
+    //获得io密集型线程池
     public ExecutorService getIOThreadPoolExecutor() {
         return mIOThreadPoolExecutor;
     }
