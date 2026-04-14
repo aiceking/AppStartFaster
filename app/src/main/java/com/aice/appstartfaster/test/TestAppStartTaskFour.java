@@ -14,7 +14,7 @@ public class TestAppStartTaskFour extends AppStartTask {
     public void run() {
         long start = System.currentTimeMillis();
         try {
-            Thread.sleep(300);
+            Thread.sleep(3000);
         }catch (Exception e){
 
         }
@@ -34,4 +34,8 @@ public class TestAppStartTaskFour extends AppStartTask {
         return false;
     }
 
+    @Override
+    public boolean needWait() {
+        return true;
+    }
 }

@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         AppStartTaskDispatcher.create()
                 .setShowLog(true)
-                .setAllTaskWaitTimeOut(1000)
                 .addAppStartTask(new TestAppStartTaskTwo())
                 .addAppStartTask(new TestAppStartTaskFour())
                 .addAppStartTask(new TestAppStartTaskFive())
