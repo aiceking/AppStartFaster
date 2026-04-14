@@ -6,7 +6,8 @@ plugins {
 project.version = '2.4.0'
 
 android {
-    compileSdk rootProject.ext.compileSdk
+    namespace = "com.wxy.appstartfaster"
+    compileSdk = rootProject.ext.compileSdk
     defaultConfig {
         minSdk rootProject.ext.minSdk
         targetSdk rootProject.ext.compileSdk
@@ -25,8 +26,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
 }

@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk rootProject.ext.compileSdk
+    namespace = "com.aice.appstartfaster"
+    compileSdk = rootProject.ext.compileSdk
 
     defaultConfig {
         applicationId "com.aice.appstartfaster"
@@ -19,8 +20,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 

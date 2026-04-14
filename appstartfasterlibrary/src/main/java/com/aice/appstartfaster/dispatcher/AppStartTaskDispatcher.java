@@ -65,7 +65,7 @@ public class AppStartTaskDispatcher {
 
     public AppStartTaskDispatcher addAppStartTask(AppStartTask appStartTask) {
         if (appStartTask == null) {
-            throw new RuntimeException("addAppStartTask() 传入的appStartTask为null");
+            throw new RuntimeException("addAppStartTask(): appStartTask must not be null");
         }
         mStartTaskList.add(appStartTask);
         if (ifNeedWait(appStartTask)) {
@@ -76,7 +76,7 @@ public class AppStartTaskDispatcher {
 
     public AppStartTaskDispatcher start() {
         if (Looper.getMainLooper() != Looper.myLooper()) {
-            throw new RuntimeException("start方法必须在主线程调用");
+            throw new RuntimeException("start() must be called on the main thread");
         }
         mStartTime = System.currentTimeMillis();
         //拓扑排序，拿到排好序之后的任务队列
@@ -102,7 +102,7 @@ public class AppStartTaskDispatcher {
     //输出排好序的Task
     private void printSortTask() {
         StringBuilder sb = new StringBuilder();
-        sb.append("当前所有任务排好的顺序为：");
+        sb.append("Current task execution order: ");
         for (int i = 0; i < mSortTaskList.size(); i++) {
             String taskName = mSortTaskList.get(i).getClass().getSimpleName();
             if (i != 0) {
@@ -137,7 +137,7 @@ public class AppStartTaskDispatcher {
 
     //标记已经完成的Task
     public void markAppStartTaskFinish(AppStartTask appStartTask) {
-        AppStartTaskLogUtil.showLog(isShowLog, "任务完成了：" + appStartTask.getClass().getSimpleName());
+        AppStartTaskLogUtil.showLog(isShowLog, "Task finished: " + appStartTask.getClass().getSimpleName());
         if (ifNeedWait(appStartTask)) {
             mCountDownLatch.countDown();
             mNeedWaitCount.getAndDecrement();
@@ -153,14 +153,14 @@ public class AppStartTaskDispatcher {
     public void await() {
         try {
             if (mCountDownLatch == null) {
-                throw new RuntimeException("在调用await()之前，必须先调用start()");
+                throw new RuntimeException("start() must be called before await()");
             }
             if (mAllTaskWaitTimeOut == 0) {
                 mAllTaskWaitTimeOut = WAITING_TIME;
             }
             mCountDownLatch.await(mAllTaskWaitTimeOut, TimeUnit.MILLISECONDS);
             mFinishTime = System.currentTimeMillis() - mStartTime;
-            AppStartTaskLogUtil.showLog(isShowLog, "启动耗时：" + mFinishTime);
+            AppStartTaskLogUtil.showLog(isShowLog, "Startup time: " + mFinishTime + "ms");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
