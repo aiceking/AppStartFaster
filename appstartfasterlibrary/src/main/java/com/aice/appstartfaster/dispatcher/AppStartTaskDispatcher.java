@@ -1,7 +1,7 @@
 package com.aice.appstartfaster.dispatcher;
 
 import android.os.Looper;
-
+import android.util.Log;
 
 import com.aice.appstartfaster.runnable.AppStartTaskRunnable;
 import com.aice.appstartfaster.util.AppStartTaskLogUtil;
@@ -17,27 +17,27 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AppStartTaskDispatcher {
-    //所有任务需要等待的时间
+    // Maximum wait time for all tasks (ms)
     private static final int WAITING_TIME = 10000;
-    //存放每个Task  （key= Class < ? extends AppStartTask>）
+    // Map to store each Task (key = Class<? extends AppStartTask>)
     private HashMap<Class<? extends AppStartTask>, AppStartTask> mTaskHashMap;
-    //每个Task的孩子 （key= Class < ? extends AppStartTask>）
+    // Map to store child tasks for each Task (key = Class<? extends AppStartTask>)
     private HashMap<Class<? extends AppStartTask>, List<Class<? extends AppStartTask>>> mTaskChildHashMap;
-    //通过Add添加进来的所有任务
+    // All tasks added via addAppStartTask()
     private List<AppStartTask> mStartTaskList;
-    //拓扑排序后的所有任务
+    // All tasks after topological sort
     private List<AppStartTask> mSortTaskList;
-    //拓扑排序后的主线程的任务
+    // Main thread tasks after topological sort
     private List<AppStartTask> mSortMainThreadTaskList;
-    //拓扑排序后的子线程的任务
+    // Thread pool tasks after topological sort
     private List<AppStartTask> mSortThreadPoolTaskList;
-    //需要等待的任务总数，用于阻塞
+    // Total number of tasks to wait for, used for blocking
     private CountDownLatch mCountDownLatch;
-    //需要等待的任务总数，用于CountDownLatch
+    // Total number of tasks to wait for, used for CountDownLatch
     private AtomicInteger mNeedWaitCount;
-    //所有的任务开始时间，结束时间
+    // Start time and finish time for all tasks
     private long mStartTime, mFinishTime;
-    //所有阻塞任务的总超时时间
+    // Total timeout for all blocking tasks
     private long mAllTaskWaitTimeOut;
     private boolean isShowLog;
 
@@ -46,8 +46,6 @@ public class AppStartTaskDispatcher {
     }
 
     private AppStartTaskDispatcher() {
-        mTaskHashMap = new HashMap<>();
-        mTaskChildHashMap = new HashMap<>();
         mStartTaskList = new ArrayList<>();
         mNeedWaitCount = new AtomicInteger();
         mSortMainThreadTaskList = new ArrayList<>();
@@ -80,10 +78,10 @@ public class AppStartTaskDispatcher {
             throw new RuntimeException("start() must be called on the main thread");
         }
         mStartTime = System.currentTimeMillis();
-        //拓扑排序，拿到排好序之后的任务队列
+        // Topological sort to get the ordered task queue
         TaskSortResult result = AppStartTaskSortUtil.getSortResult(mStartTaskList);
-        mSortTaskList = result.sortedList;
-        mTaskHashMap = result.taskMap;
+        mSortTaskList     = result.sortedList;
+        mTaskHashMap      = result.taskMap;
         mTaskChildHashMap = result.childMap;
         initRealSortTask();
         printSortTask();
@@ -92,7 +90,7 @@ public class AppStartTaskDispatcher {
         return this;
     }
 
-    //分别处理主线程和子线程的任务
+    // Separate tasks into main thread and thread pool lists
     private void initRealSortTask() {
         for (AppStartTask appStartTask : mSortTaskList) {
             if (appStartTask.isRunOnMainThread()) {
@@ -103,7 +101,7 @@ public class AppStartTaskDispatcher {
         }
     }
 
-    //输出排好序的Task
+    // Print the sorted task order
     private void printSortTask() {
         StringBuilder sb = new StringBuilder();
         sb.append("Current task execution order: ");
@@ -117,19 +115,19 @@ public class AppStartTaskDispatcher {
         AppStartTaskLogUtil.showLog(isShowLog, sb.toString());
     }
 
-    //发送任务
+    // Dispatch tasks
     private void dispatchAppStartTask() {
-        //再发送非主线程的任务
+        // Dispatch thread pool tasks first
         for (AppStartTask appStartTask : mSortThreadPoolTaskList) {
             appStartTask.runOnExecutor().execute(new AppStartTaskRunnable(appStartTask, this));
         }
-        //再发送主线程的任务，防止主线程任务阻塞，导致子线程任务不能立刻执行
+        // Dispatch main thread tasks after, to prevent them from blocking thread pool task execution
         for (AppStartTask appStartTask : mSortMainThreadTaskList) {
             new AppStartTaskRunnable(appStartTask, this).run();
         }
     }
 
-    //通知Children一个前置任务已完成
+    // Notify child tasks that a prerequisite task has completed
     public void setNotifyChildren(AppStartTask appStartTask) {
         List<Class<? extends AppStartTask>> arrayList = mTaskChildHashMap.get(appStartTask.getClass());
         if (arrayList != null && arrayList.size() > 0) {
@@ -142,7 +140,7 @@ public class AppStartTaskDispatcher {
         }
     }
 
-    //标记已经完成的Task
+    // Mark a task as finished
     public void markAppStartTaskFinish(AppStartTask appStartTask) {
         AppStartTaskLogUtil.showLog(isShowLog, "Task finished: " + appStartTask.getClass().getSimpleName());
         if (ifNeedWait(appStartTask)) {
@@ -151,12 +149,12 @@ public class AppStartTaskDispatcher {
         }
     }
 
-    //是否需要等待，主线程的任务本来就是阻塞的，所以不用管
+    // Whether the task needs to be waited on; main thread tasks are inherently blocking, so they are excluded
     private boolean ifNeedWait(AppStartTask task) {
         return !task.isRunOnMainThread() && task.needWait();
     }
 
-    //等待，阻塞主线程
+    // Wait and block the main thread
     public void await() {
         try {
             if (mCountDownLatch == null) {
@@ -169,7 +167,8 @@ public class AppStartTaskDispatcher {
             mFinishTime = System.currentTimeMillis() - mStartTime;
             AppStartTaskLogUtil.showLog(isShowLog, "Startup time: " + mFinishTime + "ms");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            Log.w("AppStartTask", "await interrupted: " + e.getMessage());
         }
     }
 }
