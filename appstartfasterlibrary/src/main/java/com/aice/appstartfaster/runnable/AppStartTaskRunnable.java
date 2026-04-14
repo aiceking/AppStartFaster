@@ -17,9 +17,6 @@ public class AppStartTaskRunnable implements Runnable {
 
     @Override
     public void run() {
-        if (!mAppStartTask.isRunOnMainThread()) {
-            Process.setThreadPriority(mAppStartTask.priority());
-        }
         mAppStartTask.waitToNotify();
         try {
             mAppStartTask.run();

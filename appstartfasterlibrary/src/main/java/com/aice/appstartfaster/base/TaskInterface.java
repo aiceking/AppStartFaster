@@ -1,21 +1,10 @@
 package com.aice.appstartfaster.base;
 
-import android.os.Process;
-
-
 import com.aice.appstartfaster.task.AppStartTask;
-
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import androidx.annotation.IntRange;
-
-
 public interface TaskInterface {
-    //线程的优先级
-    @IntRange(from = Process.THREAD_PRIORITY_FOREGROUND, to = Process.THREAD_PRIORITY_LOWEST)
-    int priority();
-
     //执行任务所在的线程池
     Executor runOnExecutor();
 

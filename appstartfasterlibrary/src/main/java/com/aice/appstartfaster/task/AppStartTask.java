@@ -39,11 +39,6 @@ public abstract class AppStartTask implements TaskInterface {
         }
     }
 
-    @Override
-    public int priority() {
-        return Process.THREAD_PRIORITY_BACKGROUND;
-    }
-
     //执行任务代码
     public abstract void run();
 
