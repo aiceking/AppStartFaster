@@ -47,8 +47,8 @@ public abstract class AppStartTask implements TaskInterface {
     //执行任务代码
     public abstract void run();
 
-    //他的父亲们执行完了一个（Task 5 将改名为 notifyDependencyFinished）
-    public void Notify() {
+    // 父任务执行完成时由 Dispatcher 调用，解除当前任务的等待
+    public void notifyDependencyFinished() {
         mDepends.countDown();
     }
 

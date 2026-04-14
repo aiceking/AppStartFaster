@@ -134,7 +134,10 @@ public class AppStartTaskDispatcher {
         List<Class<? extends AppStartTask>> arrayList = mTaskChildHashMap.get(appStartTask.getClass());
         if (arrayList != null && arrayList.size() > 0) {
             for (Class<? extends AppStartTask> aclass : arrayList) {
-                mTaskHashMap.get(aclass).Notify();
+                AppStartTask child = mTaskHashMap.get(aclass);
+                if (child != null) {
+                    child.notifyDependencyFinished();
+                }
             }
         }
     }
