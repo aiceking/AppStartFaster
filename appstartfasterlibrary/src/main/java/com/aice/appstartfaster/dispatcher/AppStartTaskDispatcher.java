@@ -80,9 +80,9 @@ public class AppStartTaskDispatcher {
         mStartTime = System.currentTimeMillis();
         // Topological sort to get the ordered task queue
         TaskSortResult result = AppStartTaskSortUtil.getSortResult(mStartTaskList);
-        mSortTaskList     = result.sortedList;
-        mTaskHashMap      = result.taskMap;
-        mTaskChildHashMap = result.childMap;
+        mSortTaskList = result.sortedList();
+        mTaskHashMap = result.taskMap();
+        mTaskChildHashMap = result.childMap();
         initRealSortTask();
         printSortTask();
         mCountDownLatch = new CountDownLatch(mNeedWaitCount.get());

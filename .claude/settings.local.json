@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(./gradlew :appstartfasterlibrary:assembleRelease:*)",
+      "Bash(./gradlew :appstartfasterlibrary:test)",
+      "Bash(./gradlew :appstartfasterlibrary:testDebugUnitTest --info)",
+      "Bash(git commit:*)",
+      "Bash(./gradlew :app:assembleDebug:*)"
+    ]
+  }
+}

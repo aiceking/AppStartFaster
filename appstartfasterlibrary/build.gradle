@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-project.version = '2.4.0'
+project.version = '2.5.0'
 
 android {
     namespace = "com.wxy.appstartfaster"

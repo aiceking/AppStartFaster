@@ -64,10 +64,10 @@ public class AppStartTaskSortUtilTest {
         List<AppStartTask> tasks = Arrays.asList(new TaskC(), new TaskA(), new TaskB());
         TaskSortResult result = AppStartTaskSortUtil.getSortResult(tasks);
 
-        assertEquals(3, result.sortedList.size());
-        assertTrue(result.sortedList.get(0) instanceof TaskA);
-        assertTrue(result.sortedList.get(1) instanceof TaskB);
-        assertTrue(result.sortedList.get(2) instanceof TaskC);
+        assertEquals(3, result.sortedList().size());
+        assertTrue(result.sortedList().get(0) instanceof TaskA);
+        assertTrue(result.sortedList().get(1) instanceof TaskB);
+        assertTrue(result.sortedList().get(2) instanceof TaskC);
     }
 
     @Test
@@ -75,10 +75,10 @@ public class AppStartTaskSortUtilTest {
         List<AppStartTask> tasks = Collections.singletonList(new TaskA());
         TaskSortResult result = AppStartTaskSortUtil.getSortResult(tasks);
 
-        assertEquals(1, result.sortedList.size());
-        assertNotNull(result.taskMap);
-        assertNotNull(result.childMap);
-        assertTrue(result.taskMap.containsKey(TaskA.class));
+        assertEquals(1, result.sortedList().size());
+        assertNotNull(result.taskMap());
+        assertNotNull(result.childMap());
+        assertTrue(result.taskMap().containsKey(TaskA.class));
     }
 
     @Test(expected = RuntimeException.class)
