@@ -6,6 +6,7 @@ import android.os.Looper;
 import com.aice.appstartfaster.runnable.AppStartTaskRunnable;
 import com.aice.appstartfaster.util.AppStartTaskLogUtil;
 import com.aice.appstartfaster.util.AppStartTaskSortUtil;
+import com.aice.appstartfaster.util.model.TaskSortResult;
 import com.aice.appstartfaster.task.AppStartTask;
 
 import java.util.ArrayList;
@@ -80,7 +81,10 @@ public class AppStartTaskDispatcher {
         }
         mStartTime = System.currentTimeMillis();
         //拓扑排序，拿到排好序之后的任务队列
-        mSortTaskList = AppStartTaskSortUtil.getSortResult(mStartTaskList, mTaskHashMap, mTaskChildHashMap);
+        TaskSortResult result = AppStartTaskSortUtil.getSortResult(mStartTaskList);
+        mSortTaskList = result.sortedList;
+        mTaskHashMap = result.taskMap;
+        mTaskChildHashMap = result.childMap;
         initRealSortTask();
         printSortTask();
         mCountDownLatch = new CountDownLatch(mNeedWaitCount.get());

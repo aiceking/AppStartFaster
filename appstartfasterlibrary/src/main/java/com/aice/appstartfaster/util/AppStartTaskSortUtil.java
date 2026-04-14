@@ -1,8 +1,7 @@
 package com.aice.appstartfaster.util;
 
-
 import com.aice.appstartfaster.task.AppStartTask;
-import com.aice.appstartfaster.util.model.TaskSortModel;
+import com.aice.appstartfaster.util.model.TaskSortResult;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -11,52 +10,62 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AppStartTaskSortUtil {
+
     /**
-     * 拓扑排序
-     * taskIntegerHashMap每个Task的入度（key= Class < ? extends AppStartTask>）
-     * taskHashMap每个Task            （key= Class < ? extends AppStartTask>）
-     * taskChildHashMap每个Task的孩子  （key= Class < ? extends AppStartTask>）
-     * deque 入度为0的Task
+     * 拓扑排序（Kahn 算法）。
+     * 纯函数：不修改任何外部状态，结果封装在 TaskSortResult 中返回。
+     *
+     * @throws RuntimeException 任务重复或存在循环依赖时抛出
      */
-    public static List<AppStartTask> getSortResult(List<AppStartTask> startTaskList, HashMap<Class<? extends AppStartTask>, AppStartTask> taskHashMap, HashMap<Class<? extends AppStartTask>, List<Class<? extends AppStartTask>>> taskChildHashMap) {
-        List<AppStartTask> sortTaskList = new ArrayList<>();
-        HashMap<Class<? extends AppStartTask>, TaskSortModel> taskIntegerHashMap = new HashMap<>();
-        Deque<Class<? extends AppStartTask>> deque = new ArrayDeque<>();
+    public static TaskSortResult getSortResult(List<AppStartTask> startTaskList) {
+        List<AppStartTask> sortedList = new ArrayList<>();
+        HashMap<Class<? extends AppStartTask>, Integer> inDegreeMap = new HashMap<>();
+        HashMap<Class<? extends AppStartTask>, AppStartTask> taskMap = new HashMap<>();
+        HashMap<Class<? extends AppStartTask>, List<Class<? extends AppStartTask>>> childMap = new HashMap<>();
+        Deque<Class<? extends AppStartTask>> zeroInDegreeQueue = new ArrayDeque<>();
+
+        // 第一轮：建立入度表和 taskMap，初始化 childMap
         for (AppStartTask task : startTaskList) {
-            if (!taskIntegerHashMap.containsKey(task.getClass())) {
-                taskHashMap.put(task.getClass(), task);
-                taskIntegerHashMap.put(task.getClass(), new TaskSortModel(task.getDependsTaskList() == null ? 0 : task.getDependsTaskList().size()));
-                taskChildHashMap.put(task.getClass(), new ArrayList<Class<? extends AppStartTask>>());
-                //入度为0的队列
-                if (taskIntegerHashMap.get(task.getClass()).getIn() == 0) {
-                    deque.offer(task.getClass());
-                }
-            } else {
-                throw new RuntimeException("任务重复了: " + task.getClass());
+            if (inDegreeMap.containsKey(task.getClass())) {
+                throw new RuntimeException("Duplicate task: " + task.getClass());
+            }
+            taskMap.put(task.getClass(), task);
+            List<Class<? extends AppStartTask>> depends = task.getCachedDependsTaskList();
+            int inDegree = depends == null ? 0 : depends.size();
+            inDegreeMap.put(task.getClass(), inDegree);
+            childMap.put(task.getClass(), new ArrayList<>());
+            if (inDegree == 0) {
+                zeroInDegreeQueue.offer(task.getClass());
             }
         }
-        //把孩子都加进去
+
+        // 第二轮：填充 childMap（每个父节点记录其子节点）
         for (AppStartTask task : startTaskList) {
-            if (task.getDependsTaskList() != null) {
-                for (Class<? extends AppStartTask> aclass : task.getDependsTaskList()) {
-                    taskChildHashMap.get(aclass).add(task.getClass());
+            List<Class<? extends AppStartTask>> depends = task.getCachedDependsTaskList();
+            if (depends != null) {
+                for (Class<? extends AppStartTask> parent : depends) {
+                    childMap.get(parent).add(task.getClass());
                 }
             }
         }
-        //循环去除入度0的，再把孩子入度变成0的加进去
-        while (!deque.isEmpty()) {
-            Class<? extends AppStartTask> aclass = deque.poll();
-            sortTaskList.add(taskHashMap.get(aclass));
-            for (Class<? extends AppStartTask> classChild : taskChildHashMap.get(aclass)) {
-                taskIntegerHashMap.get(classChild).setIn(taskIntegerHashMap.get(classChild).getIn() - 1);
-                if (taskIntegerHashMap.get(classChild).getIn() == 0) {
-                    deque.offer(classChild);
+
+        // Kahn 算法主循环
+        while (!zeroInDegreeQueue.isEmpty()) {
+            Class<? extends AppStartTask> cls = zeroInDegreeQueue.poll();
+            sortedList.add(taskMap.get(cls));
+            for (Class<? extends AppStartTask> child : childMap.get(cls)) {
+                int newDegree = inDegreeMap.get(child) - 1;
+                inDegreeMap.put(child, newDegree);
+                if (newDegree == 0) {
+                    zeroInDegreeQueue.offer(child);
                 }
             }
         }
-        if (sortTaskList.size() != startTaskList.size()) {
-            throw new RuntimeException("出现环了");
+
+        if (sortedList.size() != startTaskList.size()) {
+            throw new RuntimeException("Cycle detected in task dependency graph");
         }
-        return sortTaskList;
+
+        return new TaskSortResult(sortedList, taskMap, childMap);
     }
 }

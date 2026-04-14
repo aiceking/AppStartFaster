@@ -10,7 +10,7 @@ public class TaskSortResult {
     public final HashMap<Class<? extends AppStartTask>, AppStartTask> taskMap;
     public final HashMap<Class<? extends AppStartTask>, List<Class<? extends AppStartTask>>> childMap;
 
-    TaskSortResult(List<AppStartTask> sortedList,
+    public TaskSortResult(List<AppStartTask> sortedList,
                    HashMap<Class<? extends AppStartTask>, AppStartTask> taskMap,
                    HashMap<Class<? extends AppStartTask>, List<Class<? extends AppStartTask>>> childMap) {
         this.sortedList = sortedList;
