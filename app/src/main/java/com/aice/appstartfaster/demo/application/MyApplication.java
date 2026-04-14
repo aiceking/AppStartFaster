@@ -1,4 +1,4 @@
-package com.aice.appstartfaster.application;
+package com.aice.appstartfaster.demo.application;
 
 import android.app.ActivityManager;
 import android.app.Application;
@@ -6,11 +6,11 @@ import android.content.Context;
 import android.os.Process;
 
 import com.aice.appstartfaster.dispatcher.AppStartTaskDispatcher;
-import com.aice.appstartfaster.test.TestAppStartTaskFive;
-import com.aice.appstartfaster.test.TestAppStartTaskFour;
-import com.aice.appstartfaster.test.TestAppStartTaskOne;
-import com.aice.appstartfaster.test.TestAppStartTaskThree;
-import com.aice.appstartfaster.test.TestAppStartTaskTwo;
+import com.aice.appstartfaster.demo.test.TestAppStartTaskFive;
+import com.aice.appstartfaster.demo.test.TestAppStartTaskFour;
+import com.aice.appstartfaster.demo.test.TestAppStartTaskOne;
+import com.aice.appstartfaster.demo.test.TestAppStartTaskThree;
+import com.aice.appstartfaster.demo.test.TestAppStartTaskTwo;
 
 import java.util.List;
 

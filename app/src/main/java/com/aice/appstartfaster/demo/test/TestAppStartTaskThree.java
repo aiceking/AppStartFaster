@@ -1,4 +1,4 @@
-package com.aice.appstartfaster.test;
+package com.aice.appstartfaster.demo.test;
 
 import android.util.Log;
 

@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "com.aice.appstartfaster"
+    namespace = "com.aice.appstartfaster.demo"
     compileSdk = rootProject.ext.compileSdk
 
     defaultConfig {
-        applicationId "com.aice.appstartfaster"
+        applicationId "com.aice.appstartfaster.demo"
         minSdk rootProject.ext.minSdk
         targetSdk rootProject.ext.targetSdk
         versionCode 1

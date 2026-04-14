@@ -1,11 +1,11 @@
-package com.aice.appstartfaster.ui.splash;
+package com.aice.appstartfaster.demo.ui.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.aice.appstartfaster.R;
-import com.aice.appstartfaster.ui.MainActivity;
+import com.aice.appstartfaster.demo.R;
+import com.aice.appstartfaster.demo.ui.MainActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

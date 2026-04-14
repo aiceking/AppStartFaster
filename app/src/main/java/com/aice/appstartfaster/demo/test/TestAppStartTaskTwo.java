@@ -1,31 +1,37 @@
-package com.aice.appstartfaster.test;
+package com.aice.appstartfaster.demo.test;
 
 import android.util.Log;
 
 
+import com.aice.appstartfaster.executor.TaskExecutorManager;
 import com.aice.appstartfaster.task.AppStartTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
-public class TestAppStartTaskFour extends AppStartTask {
+public class TestAppStartTaskTwo extends AppStartTask {
 
     @Override
     public void run() {
         long start = System.currentTimeMillis();
         try {
-            Thread.sleep(3000);
+            Thread.sleep(300);
         }catch (Exception e){
 
         }
-        Log.i("Task:","TestAppStartTaskFour执行耗时: "+(System.currentTimeMillis()-start));
+        Log.i("Task:","TestAppStartTaskTwo执行耗时: "+(System.currentTimeMillis()-start));
+    }
+
+    @Override
+    public Executor runOnExecutor() {
+        return TaskExecutorManager.getInstance().getCPUThreadPoolExecutor();
     }
 
     @Override
     public List<Class<? extends AppStartTask>> getDependsTaskList() {
         List<Class<? extends AppStartTask>> dependsTaskList = new ArrayList<>();
-        dependsTaskList.add(TestAppStartTaskTwo.class);
-        dependsTaskList.add(TestAppStartTaskThree.class);
+        dependsTaskList.add(TestAppStartTaskOne.class);
         return dependsTaskList;
     }
 
@@ -34,8 +40,5 @@ public class TestAppStartTaskFour extends AppStartTask {
         return false;
     }
 
-    @Override
-    public boolean needWait() {
-        return true;
-    }
+
 }
