@@ -1,6 +1,5 @@
 package com.aice.appstartfaster.task;
 
-import android.os.Process;
 import android.util.Log;
 
 import com.aice.appstartfaster.base.TaskInterface;
@@ -34,7 +33,6 @@ public abstract class AppStartTask implements TaskInterface {
         try {
             mDepends.await();
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
             Log.w("AppStartTask", "waitToNotify interrupted: " + e.getMessage());
         }
     }

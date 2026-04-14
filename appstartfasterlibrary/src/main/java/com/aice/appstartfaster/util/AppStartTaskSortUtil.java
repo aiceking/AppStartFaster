@@ -39,11 +39,17 @@ public class AppStartTaskSortUtil {
             }
         }
 
-        // 第二轮：填充 childMap（每个父节点记录其子节点）
+        // 第二轮：填充 childMap（每个父节点记录其子节点），同时校验依赖项已注册
         for (AppStartTask task : startTaskList) {
             List<Class<? extends AppStartTask>> depends = task.getCachedDependsTaskList();
             if (depends != null) {
                 for (Class<? extends AppStartTask> parent : depends) {
+                    if (!childMap.containsKey(parent)) {
+                        throw new RuntimeException(
+                                "Dependency not registered: " + parent.getSimpleName()
+                                + " (required by " + task.getClass().getSimpleName()
+                                + "). Make sure to call addAppStartTask() for every dependency.");
+                    }
                     childMap.get(parent).add(task.getClass());
                 }
             }

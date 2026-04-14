@@ -40,6 +40,8 @@ public class AppStartTaskDispatcher {
     // Total timeout for all blocking tasks
     private long mAllTaskWaitTimeOut;
     private boolean isShowLog;
+    // Flag to track if start() has been called
+    private boolean mStarted = false;
 
     public static AppStartTaskDispatcher create() {
         return new AppStartTaskDispatcher();
@@ -66,6 +68,9 @@ public class AppStartTaskDispatcher {
         if (appStartTask == null) {
             throw new RuntimeException("addAppStartTask(): appStartTask must not be null");
         }
+        if (mStarted) {
+            throw new RuntimeException("addAppStartTask() must be called before start()");
+        }
         mStartTaskList.add(appStartTask);
         if (ifNeedWait(appStartTask)) {
             mNeedWaitCount.getAndIncrement();
@@ -77,6 +82,10 @@ public class AppStartTaskDispatcher {
         if (Looper.getMainLooper() != Looper.myLooper()) {
             throw new RuntimeException("start() must be called on the main thread");
         }
+        if (mStarted) {
+            throw new RuntimeException("start() has already been called");
+        }
+        mStarted = true;
         mStartTime = System.currentTimeMillis();
         // Topological sort to get the ordered task queue
         TaskSortResult result = AppStartTaskSortUtil.getSortResult(mStartTaskList);
@@ -145,7 +154,6 @@ public class AppStartTaskDispatcher {
         AppStartTaskLogUtil.showLog(isShowLog, "Task finished: " + appStartTask.getClass().getSimpleName());
         if (ifNeedWait(appStartTask)) {
             mCountDownLatch.countDown();
-            mNeedWaitCount.getAndDecrement();
         }
     }
 

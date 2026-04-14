@@ -7,7 +7,16 @@
       "Bash(./gradlew :appstartfasterlibrary:test)",
       "Bash(./gradlew :appstartfasterlibrary:testDebugUnitTest --info)",
       "Bash(git commit:*)",
-      "Bash(./gradlew :app:assembleDebug:*)"
+      "Bash(./gradlew :app:assembleDebug:*)",
+      "Bash(./gradlew :appstartfasterlibrary:test:*)",
+      "Bash(./gradlew :appstartfasterlibrary:testDebugUnitTest)",
+      "Bash(./gradlew :appstartfasterlibrary:testDebugUnitTest -p appstartfasterlibrary)",
+      "Bash(./gradlew :appstartfasterlibrary:testDebugUnitTest -q)",
+      "Bash(find appstartfasterlibrary/build/reports/tests/testDebugUnitTest -name \"classes.html\" -exec cat {} \\\\;)",
+      "Bash(./gradlew clean:*)",
+      "Bash(./gradlew :appstartfasterlibrary:compileDebugSources:*)",
+      "Bash(tee /tmp/test_output.log)",
+      "Bash(./gradlew :appstartfasterlibrary:cleanTestReleaseUnitTest :appstartfasterlibrary:testReleaseUnitTest)"
     ]
   }
 }

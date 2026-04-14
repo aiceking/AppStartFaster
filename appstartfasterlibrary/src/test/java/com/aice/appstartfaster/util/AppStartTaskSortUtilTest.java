@@ -12,6 +12,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class AppStartTaskSortUtilTest {
 
@@ -56,6 +57,15 @@ public class AppStartTaskSortUtilTest {
         }
     }
 
+    // 依赖未注册任务的测试任务（依赖 TaskA，但 TaskA 不会被加入 startTaskList）
+    static class TaskOnlyB extends AppStartTask {
+        @Override public void run() {}
+        @Override public boolean isRunOnMainThread() { return false; }
+        @Override public List<Class<? extends AppStartTask>> getDependsTaskList() {
+            return Collections.singletonList(TaskA.class);
+        }
+    }
+
     // ---- 测试用例 ----
 
     @Test
@@ -91,5 +101,18 @@ public class AppStartTaskSortUtilTest {
     public void getSortResult_cyclicDependency_throwsException() {
         List<AppStartTask> tasks = Arrays.asList(new TaskX(), new TaskY());
         AppStartTaskSortUtil.getSortResult(tasks);
+    }
+
+    @Test
+    public void getSortResult_unregisteredDependency_throwsWithUsefulMessage() {
+        // TaskOnlyB 依赖 TaskA，但列表中只有 TaskOnlyB，TaskA 未注册
+        List<AppStartTask> tasks = Collections.singletonList(new TaskOnlyB());
+        try {
+            AppStartTaskSortUtil.getSortResult(tasks);
+            fail("Expected RuntimeException");
+        } catch (RuntimeException e) {
+            assertTrue("Error message should contain missing dependency class name",
+                    e.getMessage().contains("TaskA"));
+        }
     }
 }
